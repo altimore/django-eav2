@@ -37,7 +37,7 @@ class EavEntitySerializer(serializers.ModelSerializer):
         entity = validated_data.get("entity")
         try:
             attribute = Attribute.objects.get(
-                slug=attribute_slug,
+                slug__iexact=attribute_slug,
             )
             logger.debug(f"Attribute exists: {attribute}")
 
