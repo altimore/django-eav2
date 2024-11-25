@@ -160,7 +160,9 @@ class AttributeSerializer(serializers.ModelSerializer):
     datatype = serializers.CharField(required=False)
     slug = serializers.SlugField(required=False)
     choices = serializers.ListField(
-        child=serializers.CharField(), write_only=True, required=False
+        child=serializers.CharField(),
+        write_only=True,
+        required=False,
     )
 
     class Meta:
@@ -228,13 +230,14 @@ class ModelEavSerializer(serializers.ModelSerializer):
                     "attribute": eav_item["attribute"],  # ["slug"],
                     "value": eav_item["value"],
                     "entity": example_model,
-                }
+                },
             )
             value.entity = example_model
             value.save()
         return example_model
 
     def update(self, instance, validated_data):
+        # TODO: separate both parsing depending on the serializer
         eav_data = validated_data.pop("eav", [])
         instance = super().update(instance, validated_data)
         for attribute, value in eav_data:
@@ -245,7 +248,7 @@ class ModelEavSerializer(serializers.ModelSerializer):
                     "attribute": attribute,
                     "value": value,
                     "entity": instance,
-                }
+                },
             )
             value.entity = instance
             value.save()
@@ -254,7 +257,6 @@ class ModelEavSerializer(serializers.ModelSerializer):
 
 
 class ModelEavDictSerializer(ModelEavSerializer):
-
     class Meta(ModelEavSerializer.Meta):
         fields = "__all__"
 
