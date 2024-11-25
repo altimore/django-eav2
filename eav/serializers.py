@@ -237,16 +237,13 @@ class ModelEavSerializer(serializers.ModelSerializer):
         return example_model
 
     def update(self, instance, validated_data):
-        # TODO: separate both parsing depending on the serializer
         eav_data = validated_data.pop("eav", [])
         instance = super().update(instance, validated_data)
-        for attribute, value in eav_data:
+        for eav_item in eav_data:
             value = EavEntitySerializer().update_or_create(
                 {
-                    # "attribute": eav_item["attribute"],  # ["slug"],
-                    # "value": eav_item["value"],
-                    "attribute": attribute,
-                    "value": value,
+                    "attribute": eav_item["attribute"],  # ["slug"],
+                    "value": eav_item["value"],
                     "entity": instance,
                 },
             )
@@ -273,3 +270,34 @@ class ModelEavDictSerializer(ModelEavSerializer):
             eav_representation[eav_item.attribute.slug] = eav_item.value_enum.value
         representation["eav"] = eav_representation
         return representation
+
+    def create(self, validated_data):
+        eav_data = validated_data.pop("eav", [])
+        example_model = self.Meta.model.objects.create(**validated_data)
+        for attribute, value in eav_data.items():
+            value = EavEntitySerializer().update_or_create(
+                {
+                    "attribute": attribute,
+                    "value": value,
+                    "entity": example_model,
+                },
+            )
+            value.entity = example_model
+            value.save()
+        return example_model
+
+    def update(self, instance, validated_data):
+        eav_data = validated_data.pop("eav", [])
+        instance = super().update(instance, validated_data)
+        for attribute, value in eav_data.items():
+            value = EavEntitySerializer().update_or_create(
+                {
+                    "attribute": attribute,
+                    "value": value,
+                    "entity": instance,
+                },
+            )
+            value.entity = instance
+            value.save()
+
+        return instance
