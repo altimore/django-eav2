@@ -3,8 +3,14 @@ This module contains pure wrapper functions used as decorators.
 Functions in this module should be simple and not involve complex logic.
 """
 
+from typing import Callable, Type
 
-def register_eav(**kwargs):
+from django.db.models import Model
+
+from eav import register  # type: Callable[[Type[Model], ...], None]
+
+
+def register_eav(**kwargs) -> Callable[..., Type[Model]]:
     """
     Registers the given model(s) classes and wrapped ``Model`` class with
     Django EAV 2::

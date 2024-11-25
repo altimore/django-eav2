@@ -35,7 +35,10 @@ class EnumValue(models.Model):
        the same *Yes* and *No* *EnumValues* for both *EnumGroups*.
     """
 
-    id = get_pk_format()
+    # id = get_pk_format()
+    id = models.AutoField(
+        primary_key=True
+    )  # Use AutoField for auto-incrementing primary key
 
     value = models.CharField(
         _("Value"),

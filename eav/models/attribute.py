@@ -115,7 +115,10 @@ class Attribute(models.Model):
     )
 
     # Core attributes
-    id = get_pk_format()
+    # id = get_pk_format()
+    id = models.AutoField(
+        primary_key=True
+    )  # Use AutoField for auto-incrementing primary key
 
     datatype = EavDatatypeField(
         choices=DATATYPE_CHOICES,

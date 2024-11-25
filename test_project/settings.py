@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
     # Test Project:
     "test_project.apps.TestAppConfig",
     # Our app:
@@ -64,11 +65,18 @@ TEMPLATES = [
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": ":memory:",
+#     },
+# }
+ROOT_URLCONF = "test_project.urls"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": ":memory:",
-    },
+        "NAME": "./db.sqlite3",
+    }
 }
 
 
