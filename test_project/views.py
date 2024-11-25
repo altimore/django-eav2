@@ -9,7 +9,7 @@ from eav.serializers import (
 )
 
 from .models import ExampleModel
-from .serializers import ExampleModelEavDictSerializer, ExampleModelSerializer
+from .serializers import ExampleModelEavDictSerializer
 
 
 class EavAttributeViewSet(viewsets.ModelViewSet):
@@ -17,9 +17,6 @@ class EavAttributeViewSet(viewsets.ModelViewSet):
     queryset = Attribute.objects.all()
     serializer_class = AttributeSerializer
     permission_classes = [AllowAny]
-
-    # def get_queryset(self):
-    #     return Entity.objects.filter(entity__object_id=self.kwargs["pk"])
 
 
 class EavEnumGroupViewSet(viewsets.ModelViewSet):

@@ -6,18 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('eav', '0017_auto_20241120_1519'),
+        ("eav", "0017_auto_20241120_1519"),
     ]
 
-    operations = [
-        migrations.AlterField(
-            model_name='enumgroup',
-            name='id',
-            field=models.BigAutoField(editable=False, primary_key=True, serialize=False),
-        ),
-        migrations.AlterField(
-            model_name='value',
-            name='id',
-            field=models.BigAutoField(editable=False, primary_key=True, serialize=False),
-        ),
-    ]
+    operations = []

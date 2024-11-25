@@ -237,11 +237,13 @@ class ModelEavSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         eav_data = validated_data.pop("eav", [])
         instance = super().update(instance, validated_data)
-        for eav_item in eav_data:
+        for attribute, value in eav_data:
             value = EavEntitySerializer().update_or_create(
                 {
-                    "attribute": eav_item["attribute"],  # ["slug"],
-                    "value": eav_item["value"],
+                    # "attribute": eav_item["attribute"],  # ["slug"],
+                    # "value": eav_item["value"],
+                    "attribute": attribute,
+                    "value": value,
                     "entity": instance,
                 }
             )

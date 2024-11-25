@@ -64,6 +64,7 @@ python = "^3.8"
 django = ">=4.2,<5.2"
 mypy = "^1.13.0"
 djangorestframework = "^3.15.2"
+commitizen = "^3.31.0"
 
 [tool.poetry.group.test.dependencies]
 mypy = "^1.6"
