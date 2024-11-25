@@ -6,28 +6,18 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "django-eav2"
 description = "Entity-Attribute-Value storage for Django"
-version = "1.8.0"
+version = "1.8.1"
 license = "GNU Lesser General Public License (LGPL), Version 3"
-packages = [
-  { include = "eav" }
-]
+packages = [{ include = "eav" }]
 
 
-authors = [
-  "Mauro Lizaur <mauro@sdf.org>",
-]
+authors = ["Mauro Lizaur <mauro@sdf.org>"]
 
 readme = "README.md"
 
 repository = "https://github.com/jazzband/django-eav2"
 
-keywords = [
-  "django",
-  "django-eav2",
-  "database",
-  "eav",
-  "sql",
-]
+keywords = ["django", "django-eav2", "database", "eav", "sql"]
 
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -51,9 +41,7 @@ classifiers = [
 ]
 
 [tool.semantic_release]
-version_variable = [
-    "pyproject.toml:version"
-]
+version_variable = ["pyproject.toml:version"]
 branch = "master"
 upload_to_pypi = false
 upload_to_release = false
@@ -97,16 +85,16 @@ line-length = 88
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-  "ANN",      # Type hints related, let mypy handle these.
-  "ARG",      # Unused arguments
-  "D",        # Docstrings related
-  "EM101",    # "Exception must not use a string literal, assign to variable first"
-  "EM102",    # "Exception must not use an f-string literal, assign to variable first"
-  "PD",       # Pandas related
-  "Q000",     # For now
-  "SIM105",   # "Use contextlib.suppress({exception}) instead of try-except-pass"
-  "TRY003",   # "Avoid specifying long messages outside the exception class"
-  ]
+  "ANN",    # Type hints related, let mypy handle these.
+  "ARG",    # Unused arguments
+  "D",      # Docstrings related
+  "EM101",  # "Exception must not use a string literal, assign to variable first"
+  "EM102",  # "Exception must not use an f-string literal, assign to variable first"
+  "PD",     # Pandas related
+  "Q000",   # For now
+  "SIM105", # "Use contextlib.suppress({exception}) instead of try-except-pass"
+  "TRY003", # "Avoid specifying long messages outside the exception class"
+]
 
 [tool.ruff.lint.flake8-implicit-str-concat]
 allow-multiline = false
@@ -123,13 +111,13 @@ allow-multiline = false
 
 # pytest is even more special
 "tests/*" = [
-  "INP001",   # "Add an __init__.py"
-  "PLR2004",  # "Magic value used in comparison"
-  "PT009",    # "Use a regular assert instead of unittest-style"
-  "PT027",    # "Use pytest.raises instead of unittest-style"
-  "S101",     # "Use of assert detected"
-  "SLF001"    # "Private member accessed"
-  ]
+  "INP001",  # "Add an __init__.py"
+  "PLR2004", # "Magic value used in comparison"
+  "PT009",   # "Use a regular assert instead of unittest-style"
+  "PT027",   # "Use pytest.raises instead of unittest-style"
+  "S101",    # "Use of assert detected"
+  "SLF001",  # "Private member accessed"
+]
 
 [tool.ruff.lint.pydocstyle]
 # Use Google-style docstrings.
@@ -137,7 +125,8 @@ convention = "google"
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-tag_format = "$version"
+tag_format = "$major.$minor.$patch"
 version_scheme = "semver"
 version_provider = "poetry"
-update_changelog_on_bump = true
+# update_changelog_on_bump = true
+changelog_start_rev = "1.8.0"
