@@ -83,7 +83,6 @@ However, it is important to note that:
 
 In some use-cases, JSONB (binary JSON data) datatype (Postgres 9.4+ and analogous in other RDMSs) can be used as an alternative to EAV. JSONB supports indexing, which amortizes performance trade-off. It's important to keep in mind that JSONB is not RDMS-agnostic solution and has it's own problems, such as typing.
 
-
 ## Installation
 
 Install with pip
@@ -105,7 +104,7 @@ INSTALLED_APPS = [
 
 Add `django.db.models.UUIDField` or `django.db.models.BigAutoField` as value of `EAV2_PRIMARY_KEY_FIELD` in your settings
 
-``` python
+```python
 EAV2_PRIMARY_KEY_FIELD = "django.db.models.UUIDField" # as example
 ```
 
@@ -114,32 +113,34 @@ EAV2_PRIMARY_KEY_FIELD = "django.db.models.UUIDField" # as example
 If the primary key of eav models are to be modified (UUIDField -> BigAutoField, BigAutoField -> UUIDField) in the middle of the project when the migrations are already done, you have to change the value of `EAV2_PRIMARY_KEY_FIELD` in your settings.
 
 ##### Step 1
- Change the value of `EAV2_PRIMARY_KEY_FIELD` into `django.db.models.CharField` in your settings.
 
- ```python
- EAV2_PRIMARY_KEY_FIELD = "django.db.models.CharField"
- ```
+Change the value of `EAV2_PRIMARY_KEY_FIELD` into `django.db.models.CharField` in your settings.
 
- Run the migrations
+```python
+EAV2_PRIMARY_KEY_FIELD = "django.db.models.CharField"
+```
 
- ```bash
- python manage.py makemigrations
- python manage.py migrate
- ```
+Run the migrations
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
 
 ##### Step 2
- Change the value of `EAV2_PRIMARY_KEY_FIELD` into the desired value (`django.db.models.BigAutoField` or `django.db.models.UUIDField`) in your settings.
 
- ```python
- EAV2_PRIMARY_KEY_FIELD = "django.db.models.BigAutoField" # as example
- ```
+Change the value of `EAV2_PRIMARY_KEY_FIELD` into the desired value (`django.db.models.BigAutoField` or `django.db.models.UUIDField`) in your settings.
 
-  Run again the migrations.
+```python
+EAV2_PRIMARY_KEY_FIELD = "django.db.models.BigAutoField" # as example
+```
+
+Run again the migrations.
 
 ```bash
  python manage.py makemigrations
  python manage.py migrate
- ```
+```
 
 ### Note: Django 2.2 Users
 
@@ -200,3 +201,8 @@ Supplier.objects.filter(eav__city='London')
 [2] What is so bad about EAV, anyway?, https://sqlblog.org/2009/11/19/what-is-so-bad-about-eav-anyway <br>
 [3] Magento for Developers: Part 7—Advanced ORM: Entity Attribute Value, https://devdocs.magento.com/guides/m1x/magefordev/mage-for-dev-7.html <br>
 [4] Data Extraction and Ad Hoc Query of an Entity— Attribute— Value Database, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC61332/
+
+## django REST Framework
+
+To use Django EAV2 with DRF there is a serializers.py in the eav folder.
+You can use these like in the example shown in the test_project folder.
