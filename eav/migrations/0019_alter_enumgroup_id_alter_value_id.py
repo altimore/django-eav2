@@ -7,7 +7,7 @@ def set_value_id_sequence(apps, schema_editor):
     with connection.cursor() as cursor:
         if connection.vendor == "postgresql":
             cursor.execute(
-                "SELECT setval(pg_get_serial_sequence('eav_value', 'id'), 100, false);"
+                "SELECT setval(pg_get_serial_sequence('eav_value', 'id'), 1000, false);"
             )
 
 
