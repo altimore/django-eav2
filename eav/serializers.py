@@ -49,19 +49,19 @@ class EavEntitySerializer(serializers.ModelSerializer):
                 )
                 enum_group.values.add(enum_value)
 
-                value, created = Value.objects.get_or_create(
-                    attribute=attribute,
-                    entity_ct=ContentType.objects.get_for_model(entity),
-                    entity_id=entity.id,
-                )
-                value.value_enum = enum_value
-                value.save()
-                if created:
-                    logger.debug(f"Value created: {value}")
-                else:
-                    logger.debug(f"Value exists: {value}")
+            #     value, created = Value.objects.get_or_create(
+            #         attribute=attribute,
+            #         entity_ct=ContentType.objects.get_for_model(entity),
+            #         entity_id=entity.id,
+            #     )
+            #     value.value_enum = enum_value
+            #     value.save()
+            #     if created:
+            #         logger.debug(f"Value created: {value}")
+            #     else:
+            #         logger.debug(f"Value exists: {value}")
 
-                return value
+            #     return value
         except Attribute.DoesNotExist:
             logger.debug(f"Attribute does not exist: {attribute_slug}")
             enum_group, created = EnumGroup.objects.get_or_create(name=attribute_slug)
@@ -76,49 +76,30 @@ class EavEntitySerializer(serializers.ModelSerializer):
                 value=value_data,
             )
             enum_group.values.add(enum_value)
-
-            value, created = Value.objects.get_or_create(
+        try:
+            value = Value.objects.get(
                 attribute=attribute,
                 entity_ct=ContentType.objects.get_for_model(entity),
                 entity_id=entity.id,
             )
             value.value_enum = enum_value
-            if created:
-                logger.debug(f"Value created: {value}")
-            else:
-                logger.debug(f"Value exists: {value}")
+            value.save()
+        except Value.DoesNotExist:
+            value = Value.objects.create(
+                attribute=attribute,
+                entity_ct=ContentType.objects.get_for_model(entity),
+                entity_id=entity.id,
+            )
+            value.value_enum = enum_value
+            value.save()
+        # if created:
+        #     logger.debug(f"Value created: {value}")
+        # else:
+        #     logger.debug(f"Value exists: {value}")
 
-            return value
-        else:
-            raise serializers.ValidationError("Enum group not found for the attribute.")
-
-    # def update_or_create(self, validated_data):
-    #     attribute_slug = validated_data.get("attribute")
-    #     value_data = validated_data.get("value")
-    #     attribute, _ = Attribute.objects.get_or_create(
-    #         slug=attribute_slug,
-    #         defaults={
-    #             "name": attribute_slug,
-    #             "datatype": Attribute.TYPE_ENUM,  # Ensure this matches your datatype
-    #         },
-    #     )
-    #     enum_group = attribute.enum_group
-
-    #     if enum_group:
-    #         enum_value, created = EnumValue.objects.update_or_create(
-    #             value=value_data,
-    #         )
-    #         enum_group.values.add(enum_value)
-
-    #         value = Value.objects.create(
-    #             attribute=attribute,
-    #             value_enum=enum_value,
-    #             entity_ct=ContentType.objects.get_for_model(entity),
-    #             entity_id=entity.id,
-    #         )
-    #         return value
-    #     else:
-    #         raise serializers.ValidationError("Enum group not found for the attribute.")
+        return value
+        # else:
+        #     raise serializers.ValidationError("Enum group not found for the attribute.")
 
 
 class EnumValueSerializer(serializers.ModelSerializer):
@@ -192,26 +173,6 @@ class AttributeSerializer(serializers.ModelSerializer):
 
         return attribute
 
-    #     attribute = Attribute.objects.create(**validated_data)
-    #     if enum_group_data:
-    #         enum_group_serializer = EnumGroupSerializer(data=enum_group_data)
-    #         if enum_group_serializer.is_valid():
-    #             enum_group = enum_group_serializer.save()
-    #             attribute.enum_group = enum_group
-    #             attribute.save()
-    #     return attribute
-
-    # def update(self, instance, validated_data):
-    #     enum_group_data = validated_data.pop("enum_group", None)
-    #     attribute = super().update(instance, validated_data)
-    #     if enum_group_data:
-    #         enum_group_serializer = EnumGroupSerializer(
-    #             instance.enum_group, data=enum_group_data
-    #         )
-    #         if enum_group_serializer.is_valid():
-    #             enum_group_serializer.save()
-    #     return attribute
-
 
 class ModelEavSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
@@ -275,7 +236,7 @@ class ModelEavDictSerializer(ModelEavSerializer):
         eav_data = validated_data.pop("eav", [])
         example_model = self.Meta.model.objects.create(**validated_data)
         for attribute, value in eav_data.items():
-            value = EavEntitySerializer().update_or_create(
+            value = EavEntitySerializer().get_or_create(
                 {
                     "attribute": attribute,
                     "value": value,
