@@ -23,7 +23,8 @@ class EnumGroup(models.Model):
     See :class:`EnumValue` for an example.
     """
 
-    id = get_pk_format()
+    # id = get_pk_format()
+    id = models.AutoField(primary_key=True)
 
     name = models.CharField(
         unique=True,

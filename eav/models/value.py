@@ -44,7 +44,8 @@ class Value(models.Model):
         # = <Value: crazy_dev_user - Fav Drink: "red bull">
     """
 
-    id = get_pk_format()
+    # id = get_pk_format()
+    id = models.AutoField(primary_key=True)
 
     # Direct foreign keys
     attribute: ForeignKey[Attribute] = ForeignKey(
