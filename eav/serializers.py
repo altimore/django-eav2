@@ -146,66 +146,44 @@ class AttributeSerializer(serializers.ModelSerializer):
         required=False,
     )
 
-    # class Meta:
-    #     model = Attribute
-    #     fields = "__all__"
-
-    # def create(self, validated_data):
-    #     name = validated_data.pop("name", None)
-    #     choices = validated_data.pop("choices", [])
-    #     # values = []
-    #     choices_group, created = EnumGroup.objects.get_or_create(name=name)
-
-    #     for choice in choices:
-    #         value, created = EnumValue.objects.get_or_create(value=choice)
-    #         # value = EnumValue.objects.create(value=choice)
-    #         # values.append(value)
-    #         # value = None
-
-    #         choices_group.values.add(value)
-
-    #     attribute, created = Attribute.objects.get_or_create(
-    #         name=name,
-    #         # slug=slugify.slugify(name),
-    #         datatype=Attribute.TYPE_ENUM,
-    #         enum_group=choices_group,
-    #     )
-
-    #     return attribute
-
     class Meta:
         model = Attribute
         fields = "__all__"
 
     def create(self, validated_data):
-        enum_group_data = validated_data.pop("enum_group", None)
+        name = validated_data.pop("name", None)
         choices = validated_data.pop("choices", [])
-        attribute = Attribute.objects.create(**validated_data)
+        # values = []
+        choices_group, created = EnumGroup.objects.get_or_create(name=name)
 
-        if enum_group_data:
-            enum_group, created = EnumGroup.objects.get_or_create(
-                id=enum_group_data["id"]
-            )
-            for value_data in enum_group_data["values"]:
-                value, created = EnumValue.objects.get_or_create(
-                    value=value_data["value"]
-                )
-                enum_group.values.add(value)
-            attribute.enum_group = enum_group
-            attribute.save()
+        for choice in choices:
+            value, created = EnumValue.objects.get_or_create(value=choice)
+            # value = EnumValue.objects.create(value=choice)
+            # values.append(value)
+            # value = None
+
+            choices_group.values.add(value)
+
+        attribute, created = Attribute.objects.get_or_create(
+            name=name,
+            # slug=slugify.slugify(name),
+            datatype=Attribute.TYPE_ENUM,
+            enum_group=choices_group,
+        )
 
         return attribute
 
     def update(self, instance, validated_data):
         enum_group_data = validated_data.pop("enum_group", None)
-        choices = validated_data.pop("choices", [])
         instance = super().update(instance, validated_data)
 
         if enum_group_data:
-            enum_group, created = EnumGroup.objects.get_or_create(
-                id=enum_group_data["id"]
-            )
-            enum_group.values.clear()
+            # enum_group, created = EnumGroup.objects.get_or_create(
+            #     id=enum_group_data["id"]
+            # )
+            # enum_group.values.clear()
+            enum_group = instance.enum_group
+
             for value_data in enum_group_data["values"]:
                 value, created = EnumValue.objects.get_or_create(
                     value=value_data["value"]
