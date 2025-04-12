@@ -49,13 +49,12 @@ build_command = "pip install poetry && poetry build"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-django = ">=4.2,<5.2"
-mypy = "^1.14.1"
+django = ">=4.2"
 djangorestframework = ">=3.15.2"
 commitizen = ">=3.31.0"
 
 [tool.poetry.group.test.dependencies]
-mypy = "^1.6"
+mypy = ">=1.6"
 ruff = "^0.6.3"
 
 safety = ">=2.3,<4.0"
@@ -63,8 +62,8 @@ safety = ">=2.3,<4.0"
 pytest = ">=7.4.3,<9.0.0"
 pytest-cov = ">=4.1,<6.0"
 pytest-randomly = "^3.15"
-pytest-django = "^4.5.2"
-hypothesis = "^6.87.1"
+pytest-django = ">=4.5.2"
+hypothesis = ">=6.87.1"
 
 doc8 = ">=0.11.2,<1.2.0"
 
